@@ -44,8 +44,8 @@
     let xPercent = event.clientX / window.innerWidth;  
     let yPercent = event.clientY / window.innerHeight; 
 
-    let yRotation = (xPercent - 0.5) * 180;  
-    let xRotation = (yPercent - 0.5) * 20;   
+    let yRotation = (xPercent - 0.5) * 10;  
+    let xRotation = (yPercent - 0.5) * 1;   
 
     modelViewer.setAttribute("camera-orbit", `${yRotation}deg ${xRotation}deg auto`);
   });
