@@ -8,22 +8,9 @@
     <style>
         body { margin: 0; overflow: hidden; }
         model-viewer { width: 100vw; height: 100vh; }
-        /* Optional: Background color for testing */
-        #overlay { 
-            position: absolute; 
-            top: 0; 
-            left: 0; 
-            width: 100vw; 
-            height: 100vh; 
-            background-color: red; /* Initial color for testing */
-            z-index: 9999; /* To ensure the overlay is on top */
-        }
     </style>
 </head>
 <body>
-
-<!-- The Overlay div -->
-<div id="overlay"></div>
 
 <model-viewer 
     id="myModel"
@@ -33,27 +20,26 @@
     auto-rotate 
     ar 
     shadow-intensity="1"
-    exposure="1.5">
+    exposure="1.5"
+    interaction-prompt="none"   <!-- Hides the UI hand -->
+    camera-orbit="0deg 0deg 2m"> <!-- Sets the initial view to the front -->
 </model-viewer>
 
 <script>
   const modelViewer = document.getElementById("myModel");
-  const overlay = document.getElementById("overlay");
 
   // Ensure model has loaded before applying changes
   modelViewer.addEventListener("load", () => {
     console.log("✅ Model loaded successfully!");
-    
-    // Hide the overlay once the model has loaded
-    overlay.style.display = "none";  // This hides the red overlay once the model loads
   });
 
+  // Adjust camera movement based on mouse
   document.addEventListener("mousemove", (event) => {
-    let xPercent = event.clientX / window.innerWidth;  
-    let yPercent = event.clientY / window.innerHeight; 
+    let xPercent = event.clientX / window.innerWidth;
+    let yPercent = event.clientY / window.innerHeight;
 
-    let yRotation = (xPercent - 0.5) * 10;  
-    let xRotation = (yPercent - 0.0) * 200;   
+    let yRotation = (xPercent - 0.5) * 180;  // Horizontal rotation based on mouse X
+    let xRotation = (yPercent - 0.5) * 20;   // Vertical rotation based on mouse Y
 
     modelViewer.setAttribute("camera-orbit", `${yRotation}deg ${xRotation}deg auto`);
   });
