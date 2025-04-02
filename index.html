@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer</title>
-    <script type="module" src="model-viewer.min.js"></script> <!-- Now loading locally -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer@4.0.0/dist/model-viewer.min.js"></script>
     <style>
         body { margin: 0; overflow: hidden; }
         model-viewer { width: 100vw; height: 100vh; }
@@ -21,28 +21,39 @@
     ar 
     shadow-intensity="1"
     exposure="1.5"
-    interaction-prompt="none"   <!-- Hides the UI hand -->
-    camera-orbit="0deg 90deg 2m"> <!-- Sets initial camera orbit to the front and side -->
+    interaction-prompt="none"
+    camera-orbit="0deg 90deg 2m"> 
 </model-viewer>
 
 <script>
   const modelViewer = document.getElementById("myModel");
 
-  // Ensure model has loaded before applying changes
-  modelViewer.addEventListener("load", () => {
-    console.log("✅ Model loaded successfully!");
-  });
+  let lastX = null;
+  let lastY = null;
+  let currentYRotation = 0; // Store horizontal rotation
+  let currentXRotation = 90; // Store vertical rotation (start at front)
 
-  // Adjust camera movement based on mouse
   document.addEventListener("mousemove", (event) => {
-    let xPercent = event.clientX / window.innerWidth;
-    let yPercent = event.clientY / window.innerHeight;
+    if (lastX !== null && lastY !== null) {
+      let deltaX = event.clientX - lastX;
+      let deltaY = event.clientY - lastY;
 
-    let yRotation = (xPercent - 0.5) * 180;  // Horizontal rotation based on mouse X
-    let xRotation = (yPercent - 0.5) * 20;   // Vertical rotation based on mouse Y
+      // Adjust sensitivity (smaller values = smoother motion)
+      let sensitivity = 0.3;
 
-    // Adjust the model's camera orbit based on mouse movement
-    modelViewer.setAttribute("camera-orbit", `${yRotation}deg ${90 - xRotation}deg auto`); 
+      // Update rotation values based on mouse movement
+      currentYRotation += deltaX * sensitivity;
+      currentXRotation -= deltaY * sensitivity; // Invert Y for natural movement
+      
+      // Clamp the vertical rotation so it doesn't flip upside down
+      currentXRotation = Math.max(30, Math.min(120, currentXRotation));
+
+      // Apply the new camera orbit
+      modelViewer.setAttribute("camera-orbit", `${currentYRotation}deg ${currentXRotation}deg auto`);
+    }
+
+    lastX = event.clientX;
+    lastY = event.clientY;
   });
 </script>
 
