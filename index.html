@@ -22,7 +22,7 @@
     shadow-intensity="1"
     exposure="1.5"
     interaction-prompt="none"   <!-- Hides the UI hand -->
-    camera-orbit="0deg 0deg 2m"> <!-- Sets the initial view to the front -->
+    camera-orbit="0deg 90deg 2m"> <!-- Sets initial camera orbit to the front and side -->
 </model-viewer>
 
 <script>
@@ -41,7 +41,8 @@
     let yRotation = (xPercent - 0.5) * 180;  // Horizontal rotation based on mouse X
     let xRotation = (yPercent - 0.5) * 20;   // Vertical rotation based on mouse Y
 
-    modelViewer.setAttribute("camera-orbit", `${yRotation}deg ${xRotation}deg auto`);
+    // Adjust the model's camera orbit based on mouse movement
+    modelViewer.setAttribute("camera-orbit", `${yRotation}deg ${90 - xRotation}deg auto`); 
   });
 </script>
 
