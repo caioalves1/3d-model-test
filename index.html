@@ -26,8 +26,8 @@
   const modelViewer = document.getElementById("myModel");
 
   document.addEventListener("mousemove", (event) => {
-    let xRotation = ((event.clientY / window.innerHeight) * 2 - 1) * 10; // Tilt up/down
-    let yRotation = ((event.clientX / window.innerWidth) * 2 - 1) * 90; // Rotate left/right
+    let xRotation = ((event.clientY / window.innerHeight) * 2 - 1) * 30; // Tilt up/down
+    let yRotation = ((event.clientX / window.innerWidth) * 2 - 1) * 20; // Rotate left/right
 
     modelViewer.setAttribute("camera-orbit", `${yRotation}deg ${xRotation}deg auto`);
   });
