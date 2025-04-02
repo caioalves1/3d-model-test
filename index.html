@@ -19,18 +19,33 @@
     camera-controls 
     auto-rotate 
     ar 
-    shadow-intensity="1">
+    shadow-intensity="1"
+    exposure="1.5">
 </model-viewer>
 
 <script>
   const modelViewer = document.getElementById("myModel");
 
-  document.addEventListener("mousemove", (event) => {
-    let xPercent = event.clientX / window.innerWidth;  // X position (0 to 1)
-    let yPercent = event.clientY / window.innerHeight; // Y position (0 to 1)
+  // Ensure model has loaded before applying changes
+  modelViewer.addEventListener("load", () => {
+    console.log("✅ Model loaded successfully!");
 
-    let yRotation = (xPercent - 0.5) * 180;  // Rotate left/right
-    let xRotation = (yPercent - 0.5) * 20;   // Tilt up/down (subtle effect)
+    // Change model color to red (if it has materials)
+    const material = modelViewer.model.materials[0];
+    if (material) {
+      material.pbrMetallicRoughness.setBaseColorFactor([1, 0, 0, 1]); // Red color
+      console.log("🎨 Color changed to red!");
+    } else {
+      console.log("⚠️ No material found, color change skipped.");
+    }
+  });
+
+  document.addEventListener("mousemove", (event) => {
+    let xPercent = event.clientX / window.innerWidth;  
+    let yPercent = event.clientY / window.innerHeight; 
+
+    let yRotation = (xPercent - 0.5) * 180;  
+    let xRotation = (yPercent - 0.5) * 20;   
 
     modelViewer.setAttribute("camera-orbit", `${yRotation}deg ${xRotation}deg auto`);
   });
