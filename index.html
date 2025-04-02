@@ -4,13 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Viewer</title>
-    <script type="module" src="model-viewer.min.js"></script>  <!-- Now loading locally -->
+    <script type="module" src="model-viewer.min.js"></script> <!-- Now loading locally -->
     <style>
         body { margin: 0; overflow: hidden; }
         model-viewer { width: 100vw; height: 100vh; }
+        /* Optional: Background color for testing */
+        #overlay { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            background-color: red; /* Initial color for testing */
+            z-index: 9999; /* To ensure the overlay is on top */
+        }
     </style>
 </head>
 <body>
+
+<!-- The Overlay div -->
+<div id="overlay"></div>
 
 <model-viewer 
     id="myModel"
@@ -25,27 +38,22 @@
 
 <script>
   const modelViewer = document.getElementById("myModel");
+  const overlay = document.getElementById("overlay");
 
   // Ensure model has loaded before applying changes
   modelViewer.addEventListener("load", () => {
     console.log("✅ Model loaded successfully!");
-
-    // Change model color to red (if it has materials)
-    const material = modelViewer.model.materials[0];
-    if (material) {
-      material.pbrMetallicRoughness.setBaseColorFactor([1, 0, 0, 1]); // Red color
-      console.log("🎨 Color changed to red!");
-    } else {
-      console.log("⚠️ No material found, color change skipped.");
-    }
+    
+    // Hide the overlay once the model has loaded
+    overlay.style.display = "none";  // This hides the red overlay once the model loads
   });
 
   document.addEventListener("mousemove", (event) => {
     let xPercent = event.clientX / window.innerWidth;  
     let yPercent = event.clientY / window.innerHeight; 
 
-    let yRotation = (xPercent - 0.5) * 10;  
-    let xRotation = (yPercent - 0.5) * 1;   
+    let yRotation = (xPercent - 0.5) * 180;  
+    let xRotation = (yPercent - 0.5) * 200;   
 
     modelViewer.setAttribute("camera-orbit", `${yRotation}deg ${xRotation}deg auto`);
   });
